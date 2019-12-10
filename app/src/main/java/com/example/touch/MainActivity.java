@@ -2,6 +2,7 @@ package com.example.touch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -27,16 +28,20 @@ public class MainActivity extends AppCompatActivity {
         swFlash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try {
-                    if(isChecked){
-                        flashLight.flashOn();
-                    } else{
-                        flashLight.flashOff();
-                    }
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(MainActivity.this, TouchService.class);
 
+                //try {
+                    if(isChecked){
+                        //flashLight.flashOn();
+                        intent.setAction("on");
+                    } else{
+                        //flashLight.flashOff();
+                        intent.setAction("off");
+                    }
+//                } catch (CameraAccessException e) {
+//                    e.printStackTrace();
+//                }
+                startService(intent);
 
             }
         });
