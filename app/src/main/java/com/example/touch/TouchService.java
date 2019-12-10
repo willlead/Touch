@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
 import android.os.IBinder;
+import android.util.Log;
 
 public class TouchService extends Service {
     FlashLight flashLight;
@@ -35,30 +36,36 @@ public class TouchService extends Service {
         // callback 은 호출하면 자동으로 호출되는 메서드이다.
 
         //앱에서 실행할 경우
-        if (intent.getAction().equals("on")) {
+        if (intent != null && intent.getAction() == "on") {
             try {
                 flashLight.flashOn();
                 isRunning = true;
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
-        } else if(intent.getAction().equals("off")) {
+        } else if (intent != null && intent.getAction() == "off") {
             try {
                 flashLight.flashOff();
                 isRunning = false;
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             //서비스에서 실행할 경우
+            //앱 위젯에서 실행할 경우
             isRunning = !isRunning;
-            if(isRunning){
+            if (intent == null) {
+                Log.i("testTorch", "null intent and isRunning: " + isRunning);
+                isRunning = false;
+            }
+
+            if (isRunning) {
                 try {
                     flashLight.flashOn();
                 } catch (CameraAccessException e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 try {
                     flashLight.flashOff();
                 } catch (CameraAccessException e) {
