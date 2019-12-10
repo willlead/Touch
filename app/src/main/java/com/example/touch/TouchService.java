@@ -51,6 +51,20 @@ public class TouchService extends Service {
             }
         }else {
             //서비스에서 실행할 경우
+            isRunning = !isRunning;
+            if(isRunning){
+                try {
+                    flashLight.flashOn();
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                try {
+                    flashLight.flashOff();
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
